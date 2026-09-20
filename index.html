@@ -207,6 +207,57 @@ search.addEventListener("input", () => {
 loadMovies();
 
 </script>
+    <script src="movies.js"></script>
+
+<script>
+const grid = document.getElementById("movieGrid");
+
+function showMovies(list) {
+
+    grid.innerHTML = "";
+
+    list.forEach(movie => {
+
+        grid.innerHTML += `
+        <div class="movie-card">
+
+            <img src="${movie.poster}" alt="${movie.title}">
+
+            <div class="movie-info">
+
+                <h3>${movie.title}</h3>
+
+                <p>${movie.year} • ${movie.language}</p>
+
+                <p class="description">
+                    ${movie.description}
+                </p>
+
+                <div class="buttons">
+
+                    <a class="watch"
+                       href="${movie.watch}"
+                       target="_blank">
+                       ▶ Watch
+                    </a>
+
+                    <a class="download"
+                       href="${movie.download}"
+                       target="_blank">
+                       ↓ Download
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+        `;
+    });
+}
+
+showMovies(movies);
+</script>
 
 </body>
 </html>
