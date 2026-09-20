@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MovieHub</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🎬 MovieHub</div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#movies">Movies</a>
+        <a href="#series">Web Series</a>
+        <a href="admin.html">Admin</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div>
+        <h1>Watch & Download</h1>
+        <p>Your authorized movie and video collection</p>
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search movies..."
+        >
+    </div>
+</section>
+
+<section class="container">
+
+    <h2 id="movies">Latest Movies</h2>
+
+    <div id="movieGrid" class="movie-grid">
+        <p class="loading">Loading movies...</p>
+    </div>
+
+</section>
+
+<!-- Firebase -->
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    query,
+    orderBy
+}
+from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+/* REPLACE THESE WITH YOUR FIREBASE DETAILS */
+
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const grid = document.getElementById("movieGrid");
+const search = document.getElementById("search");
+
+let movies = [];
+
+async function loadMovies() {
+
+    try {
+
+        const q = query(
+            collection(db, "movies"),
+            orderBy("createdAt", "desc")
+        );
+
+        const snapshot = await getDocs(q);
+
+        movies = [];
+
+        snapshot.forEach(doc => {
+
+            movies.push({
+                id: doc.id,
+                ...doc.data()
+            });
+
+        });
+
+        displayMovies(movies);
+
+    } catch(error) {
+
+        console.error(error);
+
+        grid.innerHTML =
+            "<p>Unable to load movies.</p>";
+    }
+}
+
+function displayMovies(list) {
+
+    if(list.length === 0) {
+
+        grid.innerHTML =
+            "<p>No movies found.</p>";
+
+        return;
+    }
+
+    grid.innerHTML = "";
+
+    list.forEach(movie => {
+
+        const card = document.createElement("div");
+
+        card.className = "movie-card";
+
+        card.innerHTML = `
+
+            <img
+                src="${movie.poster || "https://via.placeholder.com/300x450?text=Movie"}"
+                alt="${movie.title}"
+            >
+
+            <div class="movie-info">
+
+                <h3>${movie.title}</h3>
+
+                <p>
+                    ${movie.year || ""}
+                    ${movie.language ? " • " + movie.language : ""}
+                </p>
+
+                <p class="description">
+                    ${movie.description || ""}
+                </p>
+
+                <div class="buttons">
+
+                    ${
+                        movie.videoUrl
+                        ?
+                        `<a
+                            class="watch"
+                            href="${movie.videoUrl}"
+                            target="_blank">
+                            ▶ Watch
+                        </a>`
+                        :
+                        ""
+                    }
+
+                    ${
+                        movie.downloadUrl
+                        ?
+                        `<a
+                            class="download"
+                            href="${movie.downloadUrl}"
+                            target="_blank"
+                            download>
+                            ↓ Download
+                        </a>`
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+
+    });
+}
+
+search.addEventListener("input", () => {
+
+    const value =
+        search.value.toLowerCase().trim();
+
+    const filtered = movies.filter(movie =>
+
+        (movie.title || "")
+        .toLowerCase()
+        .includes(value)
+
+    );
+
+    displayMovies(filtered);
+
+});
+
+loadMovies();
+
+</script>
+
+</body>
+</html>
