@@ -1,1 +1,189 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
+body{
+    font-family:Arial,sans-serif;
+    background:#0b0b0f;
+    color:white;
+}
+
+header{
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    background:#111116;
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:1px solid #25252d;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+nav{
+    display:flex;
+    gap:25px;
+}
+
+nav a{
+    color:#ddd;
+    text-decoration:none;
+}
+
+nav a:hover{
+    color:#fff;
+}
+
+.hero{
+    min-height:350px;
+    display:flex;
+    align-items:center;
+    padding:50px 7%;
+    background:
+    linear-gradient(
+        90deg,
+        #09090d,
+        rgba(9,9,13,.65)
+    );
+}
+
+.hero h1{
+    font-size:52px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    color:#bbb;
+    font-size:18px;
+    margin-bottom:30px;
+}
+
+#search{
+    width:350px;
+    max-width:90vw;
+    padding:15px 18px;
+    border-radius:8px;
+    border:1px solid #333;
+    background:#18181e;
+    color:white;
+    outline:none;
+}
+
+.container{
+    padding:45px 7%;
+}
+
+.container h2{
+    margin-bottom:25px;
+}
+
+.movie-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(210px,1fr));
+    gap:25px;
+}
+
+.movie-card{
+    background:#15151b;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid #25252d;
+    transition:.25s;
+}
+
+.movie-card:hover{
+    transform:translateY(-5px);
+}
+
+.movie-card img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+.movie-info{
+    padding:16px;
+}
+
+.movie-info h3{
+    margin-bottom:8px;
+}
+
+.movie-info p{
+    color:#aaa;
+    font-size:14px;
+}
+
+.description{
+    margin-top:10px;
+    height:38px;
+    overflow:hidden;
+}
+
+.buttons{
+    display:flex;
+    gap:8px;
+    margin-top:15px;
+}
+
+.buttons a{
+    flex:1;
+    text-align:center;
+    padding:10px 5px;
+    border-radius:6px;
+    text-decoration:none;
+    font-size:13px;
+}
+
+.watch{
+    background:#e50914;
+    color:white;
+}
+
+.download{
+    background:#25252d;
+    color:white;
+}
+
+.loading{
+    color:#aaa;
+}
+
+@media(max-width:700px){
+
+    header{
+        padding:0 4%;
+    }
+
+    nav{
+        gap:10px;
+        font-size:13px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .movie-grid{
+        grid-template-columns:
+        repeat(2,1fr);
+        gap:12px;
+    }
+
+    .movie-card img{
+        height:240px;
+    }
+
+    .container{
+        padding:30px 4%;
+    }
+}
